@@ -35,6 +35,7 @@ paste("Found", nrow(saccade_trial_bounds), "consistent trial boundaries in EDF."
 ## Extract data of one given trial
 You can now extract properly formatted data of a specified trial, let's say trial 1. To do that, you specify the boundaries of the trial from the previous step and supply the matching text file. 
 If you tracked monocularly, always specify *dom_eye = 0* and *normal_msg_length = 5*. If you tracked binocularly, you may choose *dom_eye = 0* or *1*, but specify *normal_msg_length = 8*, so that the eyelink message and data rows can be properly recognized. Also be sure to have a matching *msg_separator* (default: *"\t"*), so that messages can be parsed. If you have sent custom messages during your trials, you may specify them in *msg_of_interest* and their timestamps will be returned if they were found (if not, you'll receive a warning). Finally, *col_names* are the column names of the returned data.frame.
+Update: There is a new parameter called *use_end_of_string* that deals with cases in which you have defined messages called "EVENT_sac" and "EVENT_sacend" (Thanks, Kai). If you then parsed for "EVENT_sac", you would find two matches. If you have messages like that and want to avoid such a situation, you may set *use_end_of_string* to TRUE (default: FALSE). 
 ```R
 trial_edf <- extract_trial_from_edf_nosearch(trial_i_start = saccade_trial_bounds$trial_i_starts[1], 
                                              trial_i_end = saccade_trial_bounds$trial_i_ends[1],
@@ -42,6 +43,7 @@ trial_edf <- extract_trial_from_edf_nosearch(trial_i_start = saccade_trial_bound
                                              dom_eye = 0, 
                                              normal_msg_length = 5,
                                              used_mode_1440 = FALSE, 
+                                             use_end_of_string = FALSE,
                                              msg_of_interest = c("EVENT_cueOn", "EVENT_timeSaccade", 
                                                                  "EVENT_timeMoveStarted", "EVENT_timeMoveFinished", 
                                                                  "EVENT_boundaryCross"),
