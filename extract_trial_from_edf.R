@@ -1,6 +1,3 @@
-library(tictoc)
-
-
 ##### function including SEARCH ######
 extract_trial_from_edf <- function(trial_i, 
                                    dom_eye,
@@ -14,7 +11,8 @@ extract_trial_from_edf <- function(trial_i,
                                    msg_separator = "\t",
                                    normal_msg_length = 8,
                                    used_mode_1440 = TRUE,
-                                   use_search = "stringi") {
+                                   use_search = "stringi", 
+                                   use_end_of_string = FALSE) {
   # aux functions
   strsplits <- function(x, splits, ...) {
     # http://stackoverflow.com/questions/10738729/r-strsplit-with-multiple-unordered-split-arguments
@@ -63,6 +61,10 @@ extract_trial_from_edf <- function(trial_i,
   asc_file_trial_i <- asc_file[trial_i_start:trial_i_end]
   c_row <- NULL
   for (msg in msg_of_interest) {
+    # see how we want to deal with the EVENT_sac and EVENT_sacend case...
+    if (use_end_of_string) {
+      msg <- paste0(msg,'$')
+    }
     # look for specific message within trial data
     msg_line <- asc_file_trial_i[grep(x = asc_file_trial_i, pattern = msg)]
     if (length(msg_line)==1) { # msg_line found
@@ -130,7 +132,8 @@ extract_trial_from_edf_nosearch <- function(trial_i_start, trial_i_end,
                                                                 "EVENT_boundaryCross"), 
                                             msg_separator = "\t",
                                             normal_msg_length = 8,
-                                            used_mode_1440 = TRUE) {
+                                            used_mode_1440 = TRUE, 
+                                            use_end_of_string = FALSE) {
   # aux functions
   strsplits <- function(x, splits, ...) {
     # http://stackoverflow.com/questions/10738729/r-strsplit-with-multiple-unordered-split-arguments
@@ -164,6 +167,10 @@ extract_trial_from_edf_nosearch <- function(trial_i_start, trial_i_end,
   asc_file_trial_i <- asc_file[trial_i_start:trial_i_end]
   c_row <- NULL
   for (msg in msg_of_interest) {
+    # see how we want to deal with the EVENT_sac and EVENT_sacend case...
+    if (use_end_of_string) {
+      msg <- paste0(msg,'$')
+    }
     # look for specific message within trial data
     msg_line <- asc_file_trial_i[grep(x = asc_file_trial_i, pattern = msg)]
     if (length(msg_line)==1) { # msg_line found
@@ -229,6 +236,9 @@ extract_trial_from_edf_nosearch <- function(trial_i_start, trial_i_end,
 test_extract_trial_from_edf <- FALSE
 
 if (test_extract_trial_from_edf) {
+  
+  library(tictoc)
+  
   # load EDF-asc converter
   source("~/Dropbox/PROMOTION WORKING FOLDER/General/EDF2ASC/convert_edf_to_asc.R")
   
