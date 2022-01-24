@@ -1,6 +1,6 @@
 # EyelinkEDFTools_R
 
-This repository holds a few R functions used for the pre-processing of SR Research Eyelink EDF files. 
+This repository holds a few R functions used for the pre-processing of SR Research Eyelink EDF files. If you should ever use these functions, you may acknowledge the publication where they were first used: Schweitzer, R., & Rolfs, M. (2020). Intra-saccadic motion streaks as cues to linking object locations across saccades. *Journal of vision, 20*(4), 17.
 
 ## Source some functions
 In order to use those functions, just source them.
